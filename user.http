@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:8080/user
+
+### get users
+GET {{baseUrl}}
+
+### get user by id
+GET {{baseUrl}}/1
+
+### add user
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Monika",
+  "email": "monika@wp.pl"
+}
+
+### delete user
+DELETE {{baseUrl}}/1
+
+### update user
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "name": "Magdalena"
+}
