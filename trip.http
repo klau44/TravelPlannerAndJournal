@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:8080/trip
+
+### get trips
+GET {{baseUrl}}
+
+### get trip by id
+GET {{baseUrl}}/1
+
+### add trip
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "rocznica",
+  "destination": "Majorka",
+  "startDate": "2026-09-22",
+  "endDate": "2026-09-29"
+}
+
+### delete trip
+DELETE {{baseUrl}}/1
+
+### update trip
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "destination": "Budapeszt",
+  "startDate": "2026-09-22",
+  "endDate": "2026-09-29"
+}
