@@ -20,15 +20,15 @@ public class TripService {
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
 
-    public TripResponse findById(Long id) {
-        return tripRepository.findById(id)
+    public TripResponse findById(Long id, Authentication authentication) {
+        User user = getUser(authentication);
+        return tripRepository.findByIdAndUser(id, user)
                 .map(TripResponse::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
     }
 
     public List<TripResponse> findAll(Authentication authentication) {
-        String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+        User user = getUser(authentication);
 
         return tripRepository.findAllByUser(user).stream()
                 .map(TripResponse::toDto)
@@ -36,8 +36,7 @@ public class TripService {
     }
 
     public TripResponse add(TripRequest tripRequest, Authentication authentication) {
-        String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+        User user = getUser(authentication);
 
         Trip trip = Trip.builder()
                 .name(tripRequest.getName())
@@ -83,4 +82,8 @@ public class TripService {
         tripRepository.delete(tripToDelete);
     }
 
+    private User getUser(Authentication authentication) {
+        String email = authentication.getName();
+        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+    }
 }
