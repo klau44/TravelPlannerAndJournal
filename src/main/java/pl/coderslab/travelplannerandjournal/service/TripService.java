@@ -75,8 +75,9 @@ public class TripService {
         return TripResponse.toDto(updated);
     }
 
-    public void delete(Long id) {
-        Trip tripToDelete = tripRepository.findById(id)
+    public void delete(Long id, Authentication authentication) {
+        User user = getUser(authentication);
+        Trip tripToDelete = tripRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
 
         tripRepository.delete(tripToDelete);
