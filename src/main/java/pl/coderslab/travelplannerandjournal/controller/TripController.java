@@ -34,8 +34,8 @@ public class TripController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TripResponse> update(@PathVariable Long id, @RequestBody TripRequest tripRequest) {
-        return new ResponseEntity<>(tripService.update(id, tripRequest), HttpStatus.CREATED);
+    public ResponseEntity<TripResponse> update(@PathVariable Long id, @RequestBody TripRequest tripRequest, Authentication authentication) {
+        return new ResponseEntity<>(tripService.update(id, tripRequest, authentication), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

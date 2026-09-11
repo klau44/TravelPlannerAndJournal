@@ -50,8 +50,10 @@ public class TripService {
         return TripResponse.toDto(saved);
     }
 
-    public TripResponse update(Long id, TripRequest tripRequest) {
-        Trip trip = tripRepository.findById(id)
+    public TripResponse update(Long id, TripRequest tripRequest, Authentication authentication) {
+        User user = getUser(authentication);
+
+        Trip trip = tripRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
 
         if (tripRequest.getName() != null) {
