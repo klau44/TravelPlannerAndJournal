@@ -19,8 +19,8 @@ public class TripController {
     private final TripService tripService;
 
     @GetMapping
-    public ResponseEntity<List<TripResponse>> findAll() {
-        return new ResponseEntity<>(tripService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<TripResponse>> findAll(Authentication authentication) {
+        return new ResponseEntity<>(tripService.findAll(authentication), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

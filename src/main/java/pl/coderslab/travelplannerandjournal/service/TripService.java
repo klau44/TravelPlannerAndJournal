@@ -26,8 +26,11 @@ public class TripService {
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
     }
 
-    public List<TripResponse> findAll() {
-        return tripRepository.findAll().stream()
+    public List<TripResponse> findAll(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+
+        return tripRepository.findAllByUser(user).stream()
                 .map(TripResponse::toDto)
                 .toList();
     }
