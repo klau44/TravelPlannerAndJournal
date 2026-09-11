@@ -1,64 +1,40 @@
 package pl.coderslab.travelplannerandjournal.service;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.coderslab.travelplannerandjournal.exception.EmailAlreadyExistsException;
+import pl.coderslab.travelplannerandjournal.model.Role;
 import pl.coderslab.travelplannerandjournal.model.User;
-import pl.coderslab.travelplannerandjournal.model.UserRequest;
+import pl.coderslab.travelplannerandjournal.model.RegisterRequest;
 import pl.coderslab.travelplannerandjournal.model.UserResponse;
 import pl.coderslab.travelplannerandjournal.repository.UserRepository;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserResponse findById(Long id) {
-        return userRepository.findById(id)
-                .map(UserResponse::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
+    @Transactional
+    public UserResponse register(RegisterRequest registerRequest) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new EmailAlreadyExistsException("Email już istnieje");
+        }
 
-    public List<UserResponse> findAll() {
-        return userRepository.findAll().stream()
-                .map(UserResponse::toDto)
-                .toList();
-    }
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
 
-    public UserResponse add(UserRequest userRequest) {
         User user = User.builder()
-                .name(userRequest.getName())
-                .email(userRequest.getEmail())
+                .name(registerRequest.getName())
+                .email(registerRequest.getEmail())
+                .passwordHash(encodedPassword)
+                .role(Role.USER)
                 .build();
+
         User saved = userRepository.save(user);
 
         return UserResponse.toDto(saved);
-    }
-
-    public UserResponse update(Long id, UserRequest userRequest) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        if (userRequest.getName() != null) {
-            user.setName(userRequest.getName());
-        }
-
-        if (userRequest.getEmail() != null) {
-            user.setEmail(userRequest.getEmail());
-        }
-
-        User updated = userRepository.save(user);
-
-        return UserResponse.toDto(updated);
-    }
-
-    public void delete(Long id) {
-        User userToDelete = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        userRepository.delete(userToDelete);
     }
 }
