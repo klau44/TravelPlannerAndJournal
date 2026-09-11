@@ -2,11 +2,14 @@ package pl.coderslab.travelplannerandjournal.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.coderslab.travelplannerandjournal.model.Trip;
 import pl.coderslab.travelplannerandjournal.model.TripRequest;
 import pl.coderslab.travelplannerandjournal.model.TripResponse;
+import pl.coderslab.travelplannerandjournal.model.User;
 import pl.coderslab.travelplannerandjournal.repository.TripRepository;
+import pl.coderslab.travelplannerandjournal.repository.UserRepository;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
 public class TripService {
 
     private final TripRepository tripRepository;
+    private final UserRepository userRepository;
 
     public TripResponse findById(Long id) {
         return tripRepository.findById(id)
@@ -28,12 +32,16 @@ public class TripService {
                 .toList();
     }
 
-    public TripResponse add(TripRequest tripRequest) {
+    public TripResponse add(TripRequest tripRequest, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+
         Trip trip = Trip.builder()
                 .name(tripRequest.getName())
                 .destination(tripRequest.getDestination())
                 .startDate(tripRequest.getStartDate())
                 .endDate(tripRequest.getEndDate())
+                .user(user)
                 .build();
         Trip saved = tripRepository.save(trip);
 

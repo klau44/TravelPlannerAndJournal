@@ -21,4 +21,8 @@ public class Trip {
     private String destination;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
