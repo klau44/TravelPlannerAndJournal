@@ -42,7 +42,12 @@ public class AttractionService {
         return places.getFeatures().stream()
                 .map(feature -> AttractionDTO.builder()
                         .name(feature.getProperties().getName())
+                        .country(feature.getProperties().getCountry())
+                        .city((feature.getProperties().getCity()))
+                        .postcode(feature.getProperties().getPostcode())
+                        .address(feature.getProperties().getAddress())
                         .categories(feature.getProperties().getCategories())
+                        .externalId(feature.getProperties().getExternalId())
                         .build())
                 .toList();
     }

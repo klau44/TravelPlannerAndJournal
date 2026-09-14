@@ -1,0 +1,4 @@
+@baseUrl = http://localhost:8080/api/attractions
+
+### get attractions by city
+GET {{baseUrl}}/search?location=Krasnystaw
