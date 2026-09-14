@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Builder
@@ -33,9 +30,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @Builder.Default
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private Set<Trip> trips = new HashSet<>();
 }

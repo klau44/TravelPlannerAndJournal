@@ -1,10 +1,10 @@
-@baseUrl = http://localhost:8080/trip
+@baseUrl = http://localhost:8080/api/trips
 
 ### get trips
 GET {{baseUrl}}
 
 ### get trip by id
-GET {{baseUrl}}/1
+GET {{baseUrl}}/3
 
 ### add trip
 POST {{baseUrl}}
@@ -17,11 +17,22 @@ Content-Type: application/json
   "endDate": "2026-09-29"
 }
 
+### add another trip
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "konferencja",
+  "destination": "Mielno",
+  "startDate": "2026-11-11",
+  "endDate": "2026-11-22"
+}
+
 ### delete trip
-DELETE {{baseUrl}}/1
+DELETE {{baseUrl}}/4
 
 ### update trip
-PUT {{baseUrl}}/1
+PUT {{baseUrl}}/3
 Content-Type: application/json
 
 {
