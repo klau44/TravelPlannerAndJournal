@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:8080/api/auth
+### register user
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "name": "kacper",
+  "email": "kacper@wp.pl",
+  "password": "BezpieczneHaslo123!"
+}
+
+### login user with correct password
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "kacper@wp.pl",
+  "password": "BezpieczneHaslo123!"
+}
+
+### login user with uncorrect password
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "klaudia@wp.pl",
+  "password": "bezpieczneHaslo123!"
+}
+
+### logout
+POST {{baseUrl}}/logout
+
