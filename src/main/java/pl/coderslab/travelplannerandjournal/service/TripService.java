@@ -24,7 +24,7 @@ public class TripService {
         User user = getUser(authentication);
         return tripRepository.findByIdAndUser(id, user)
                 .map(TripResponse::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
     }
 
     public List<TripResponse> findAll(Authentication authentication) {
@@ -54,7 +54,7 @@ public class TripService {
         User user = getUser(authentication);
 
         Trip trip = tripRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         if (tripRequest.getName() != null) {
             trip.setName(tripRequest.getName());
@@ -80,13 +80,13 @@ public class TripService {
     public void delete(Long id, Authentication authentication) {
         User user = getUser(authentication);
         Trip tripToDelete = tripRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         tripRepository.delete(tripToDelete);
     }
 
     private User getUser(Authentication authentication) {
         String email = authentication.getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje."));
+        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 }

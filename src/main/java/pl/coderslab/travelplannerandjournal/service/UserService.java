@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public UserResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new EmailAlreadyExistsException("Email już istnieje");
+            throw new EmailAlreadyExistsException("Email is already taken");
         }
 
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
@@ -58,7 +58,7 @@ public class UserService {
         securityContextRepository.saveContext(context, httpRequest, httpResponse);
 
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Użytkownik nie istnieje"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return UserResponse.toDto(user);
     }
 }
