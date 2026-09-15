@@ -5,16 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
-import org.w3c.dom.Attr;
 import pl.coderslab.travelplannerandjournal.model.*;
 import pl.coderslab.travelplannerandjournal.model.externalapi.GeocodeDTO;
 import pl.coderslab.travelplannerandjournal.model.externalapi.PlaceDTO;
 import pl.coderslab.travelplannerandjournal.repository.AttractionRepository;
-import pl.coderslab.travelplannerandjournal.repository.CategoryRepository;
 import pl.coderslab.travelplannerandjournal.repository.TripAttractionRepository;
 import pl.coderslab.travelplannerandjournal.repository.TripRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
