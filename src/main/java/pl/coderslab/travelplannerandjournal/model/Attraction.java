@@ -12,11 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "attractions")
 public class Attraction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String externalId;
     private String name;
     private String country;
@@ -24,6 +26,7 @@ public class Attraction {
     private String postcode;
     private String address;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(name = "attraction_category",
             joinColumns = @JoinColumn(name = "attraction_id"),

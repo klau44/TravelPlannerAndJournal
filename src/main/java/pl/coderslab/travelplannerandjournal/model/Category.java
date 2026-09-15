@@ -12,13 +12,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String category;
+    @Column(nullable = false, unique = true)
+    private String name;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "categories")
     private List<Attraction> attractions = new ArrayList<>();
+
+    public Category(String name) {
+        this.name = name;
+    }
 }
