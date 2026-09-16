@@ -29,6 +29,8 @@ public class Trip {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<TripAttraction> tripAttractions = new ArrayList<>();
 }
