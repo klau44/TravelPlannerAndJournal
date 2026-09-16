@@ -79,16 +79,16 @@ public class AttractionService {
                 .body(GeocodeDTO.class);
 
         if (geocode == null || geocode.getFeatures() == null || geocode.getFeatures().isEmpty()) {
-            return null; //TODO throw exception
+            throw new RuntimeException("Error with external API");
         }
 
         return geocode.getFeatures().get(0).getProperties().getPlaceId();
     }
 
     @Transactional
-    public TripAttractionResponse addAttractionToTrip(AttractionDTO attractionDTO, Long tripId) {
-        Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new EntityNotFoundException("Trip not found"));
+    public TripAttractionResponse addAttractionToTrip(AttractionDTO attractionDTO, Long tripId, Long userId) {
+        Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         Attraction attraction = attractionRepository.findByExternalId(attractionDTO.getExternalId())
                 .orElseGet(() -> createAttraction(attractionDTO));
