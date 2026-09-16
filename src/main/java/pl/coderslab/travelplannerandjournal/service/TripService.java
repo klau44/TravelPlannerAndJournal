@@ -2,7 +2,6 @@ package pl.coderslab.travelplannerandjournal.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.coderslab.travelplannerandjournal.model.Trip;
 import pl.coderslab.travelplannerandjournal.model.TripRequest;
@@ -20,23 +19,21 @@ public class TripService {
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
 
-    public TripResponse findById(Long id, Authentication authentication) {
-        User user = getUser(authentication);
-        return tripRepository.findByIdAndUser(id, user)
+    public TripResponse findById(Long tripId, Long userId) {
+        return tripRepository.findByIdAndUserId(tripId, userId)
                 .map(TripResponse::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
     }
 
-    public List<TripResponse> findAll(Authentication authentication) {
-        User user = getUser(authentication);
-
-        return tripRepository.findAllByUser(user).stream()
+    public List<TripResponse> findAll(Long userId) {
+        return tripRepository.findAllByUserId(userId).stream()
                 .map(TripResponse::toDto)
                 .toList();
     }
 
-    public TripResponse add(TripRequest tripRequest, Authentication authentication) {
-        User user = getUser(authentication);
+    public TripResponse add(TripRequest tripRequest, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         Trip trip = Trip.builder()
                 .name(tripRequest.getName())
@@ -50,10 +47,8 @@ public class TripService {
         return TripResponse.toDto(saved);
     }
 
-    public TripResponse update(Long id, TripRequest tripRequest, Authentication authentication) {
-        User user = getUser(authentication);
-
-        Trip trip = tripRepository.findByIdAndUser(id, user)
+    public TripResponse update(Long tripId, TripRequest tripRequest, Long userId) {
+        Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         if (tripRequest.getName() != null) {
@@ -77,16 +72,10 @@ public class TripService {
         return TripResponse.toDto(updated);
     }
 
-    public void delete(Long id, Authentication authentication) {
-        User user = getUser(authentication);
-        Trip tripToDelete = tripRepository.findByIdAndUser(id, user)
+    public void delete(Long tripId, Long userId) {
+        Trip tripToDelete = tripRepository.findByIdAndUserId(tripId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         tripRepository.delete(tripToDelete);
-    }
-
-    private User getUser(Authentication authentication) {
-        String email = authentication.getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 }
