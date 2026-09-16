@@ -11,11 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PlaceProperties {
-    private String city;
-    private String country;
     private String name;
-    private String formatted;
+    private String country;
+    private String city;
+    private String postcode;
+    @JsonProperty("address_line2")
+    private String address;
     private List<String> categories;
-    private Double lat;
-    private Double lon;
+    @JsonProperty("place_id")
+    private String externalId;
 }

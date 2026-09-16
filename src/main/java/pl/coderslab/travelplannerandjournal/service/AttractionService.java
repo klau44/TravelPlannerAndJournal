@@ -1,11 +1,16 @@
 package pl.coderslab.travelplannerandjournal.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
-import pl.coderslab.travelplannerandjournal.model.AttractionDTO;
+import pl.coderslab.travelplannerandjournal.model.*;
 import pl.coderslab.travelplannerandjournal.model.externalapi.GeocodeDTO;
 import pl.coderslab.travelplannerandjournal.model.externalapi.PlaceDTO;
+import pl.coderslab.travelplannerandjournal.repository.AttractionRepository;
+import pl.coderslab.travelplannerandjournal.repository.TripAttractionRepository;
+import pl.coderslab.travelplannerandjournal.repository.TripRepository;
 
 import java.util.List;
 
@@ -14,11 +19,19 @@ public class AttractionService {
 
     private final RestClient restClient;
     private final String apiKey;
+    private final AttractionRepository attractionRepository;
+    private final CategoryService categoryService;
+    private final TripRepository tripRepository;
+    private final TripAttractionRepository tripAttractionRepository;
 
-    public AttractionService(RestClient restClient,
-                             @Value("${geoapify.api-key}") String apiKey) {
+    public AttractionService(RestClient restClient, @Value("${geoapify.api-key}") String apiKey,
+                             AttractionRepository attractionRepository, CategoryService categoryService, TripRepository tripRepository, TripAttractionRepository tripAttractionRepository) {
         this.restClient = restClient;
         this.apiKey = apiKey;
+        this.attractionRepository = attractionRepository;
+        this.categoryService = categoryService;
+        this.tripRepository = tripRepository;
+        this.tripAttractionRepository = tripAttractionRepository;
     }
 
     public List<AttractionDTO> findAttractions(String city) {
@@ -42,7 +55,12 @@ public class AttractionService {
         return places.getFeatures().stream()
                 .map(feature -> AttractionDTO.builder()
                         .name(feature.getProperties().getName())
+                        .country(feature.getProperties().getCountry())
+                        .city(feature.getProperties().getCity())
+                        .postcode(feature.getProperties().getPostcode())
+                        .address(feature.getProperties().getAddress())
                         .categories(feature.getProperties().getCategories())
+                        .externalId(feature.getProperties().getExternalId())
                         .build())
                 .toList();
     }
@@ -61,9 +79,54 @@ public class AttractionService {
                 .body(GeocodeDTO.class);
 
         if (geocode == null || geocode.getFeatures() == null || geocode.getFeatures().isEmpty()) {
-            return null; //TODO throw exception
+            throw new RuntimeException("Error with external API");
         }
 
         return geocode.getFeatures().get(0).getProperties().getPlaceId();
     }
+
+    @Transactional
+    public TripAttractionResponse addAttractionToTrip(AttractionDTO attractionDTO, Long tripId, Long userId) {
+        Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
+
+        Attraction attraction = attractionRepository.findByExternalId(attractionDTO.getExternalId())
+                .orElseGet(() -> createAttraction(attractionDTO));
+
+        TripAttraction tripAttraction = TripAttraction.builder()
+                .trip(trip)
+                .attraction(attraction)
+                .visited(false)
+                .build();
+
+        tripAttractionRepository.save(tripAttraction);
+
+        return TripAttractionResponse.builder()
+                .tripName(trip.getName())
+                .tripDestination(trip.getDestination())
+                .tripStartDate(trip.getStartDate())
+                .tripEndDate(trip.getEndDate())
+                .attractionName(attraction.getName())
+                .attractionAddress(attraction.getAddress())
+                .build();
+    }
+
+    private Attraction createAttraction(AttractionDTO attractionDTO) {
+        List<Category> categories = attractionDTO.getCategories().stream()
+                .map(categoryService::findOrCreateCategory)
+                .toList();
+
+        Attraction attraction = Attraction.builder()
+                .name(attractionDTO.getName())
+                .country(attractionDTO.getCountry())
+                .city(attractionDTO.getCity())
+                .postcode(attractionDTO.getPostcode())
+                .address(attractionDTO.getAddress())
+                .categories(categories)
+                .externalId(attractionDTO.getExternalId())
+                .build();
+
+        return attractionRepository.save(attraction);
+    }
+
 }
