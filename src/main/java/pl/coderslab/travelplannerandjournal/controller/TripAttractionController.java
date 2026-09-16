@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.travelplannerandjournal.authorization.CustomUserDetails;
 import pl.coderslab.travelplannerandjournal.model.AttractionDTO;
 import pl.coderslab.travelplannerandjournal.model.TripAttractionResponse;
-import pl.coderslab.travelplannerandjournal.service.AttractionService;
+import pl.coderslab.travelplannerandjournal.model.TripPlanDto;
 import pl.coderslab.travelplannerandjournal.service.TripAttractionService;
 
 @RequiredArgsConstructor
@@ -26,5 +26,13 @@ public class TripAttractionController {
         TripAttractionResponse tripAttractionResponse = tripAttractionService.addAttractionToTrip(attractionDTO, tripId, userId);
 
         return new ResponseEntity<>(tripAttractionResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<TripPlanDto> showTripPlan(@PathVariable Long tripId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        TripPlanDto tripPlan = tripAttractionService.showTripAttractions(tripId, userId);
+
+        return new ResponseEntity<>(tripPlan, HttpStatus.CREATED);
     }
 }

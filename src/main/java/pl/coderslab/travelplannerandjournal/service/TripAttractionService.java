@@ -37,12 +37,9 @@ public class TripAttractionService {
         tripAttractionRepository.save(tripAttraction);
 
         return TripAttractionResponse.builder()
-                .tripName(trip.getName())
-                .tripDestination(trip.getDestination())
-                .tripStartDate(trip.getStartDate())
-                .tripEndDate(trip.getEndDate())
                 .attractionName(attraction.getName())
                 .attractionAddress(attraction.getAddress())
+                .visited(false)
                 .build();
     }
 
@@ -62,5 +59,26 @@ public class TripAttractionService {
                 .build();
 
         return attractionRepository.save(attraction);
+    }
+
+    public TripPlanDto showTripAttractions(Long tripId, Long userId) {
+        Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
+
+        List<TripAttraction> tripAttractions = tripAttractionRepository.findAllByTripId(tripId);
+
+        return TripPlanDto.builder()
+                .tripName(trip.getName())
+                .tripDestination(trip.getDestination())
+                .tripStartDate(trip.getStartDate())
+                .tripEndDate(trip.getEndDate())
+                .tripAttractions(tripAttractions.stream()
+                        .map(tripAttraction -> TripAttractionResponse.builder()
+                                .attractionName(tripAttraction.getAttraction().getName())
+                                .attractionAddress(tripAttraction.getAttraction().getAddress())
+                                .visited(tripAttraction.isVisited())
+                                .build())
+                        .toList())
+                .build();
     }
 }
