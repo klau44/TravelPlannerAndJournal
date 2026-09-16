@@ -9,20 +9,21 @@ import pl.coderslab.travelplannerandjournal.authorization.CustomUserDetails;
 import pl.coderslab.travelplannerandjournal.model.AttractionDTO;
 import pl.coderslab.travelplannerandjournal.model.TripAttractionResponse;
 import pl.coderslab.travelplannerandjournal.service.AttractionService;
+import pl.coderslab.travelplannerandjournal.service.TripAttractionService;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/trips/{tripId}/attractions")
 public class TripAttractionController {
 
-    private final AttractionService attractionService;
+    private final TripAttractionService tripAttractionService;
 
     @PostMapping
     public ResponseEntity<TripAttractionResponse> addAttractionToTrip(@PathVariable Long tripId,
                                                                       @RequestBody AttractionDTO attractionDTO,
                                                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
-        TripAttractionResponse tripAttractionResponse = attractionService.addAttractionToTrip(attractionDTO, tripId, userId);
+        TripAttractionResponse tripAttractionResponse = tripAttractionService.addAttractionToTrip(attractionDTO, tripId, userId);
 
         return new ResponseEntity<>(tripAttractionResponse, HttpStatus.CREATED);
     }
