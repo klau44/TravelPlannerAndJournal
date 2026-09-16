@@ -47,7 +47,7 @@ public class UserService {
     }
 
     public UserResponse login(LoginRequest loginRequest, HttpServletRequest httpRequest,
-                      HttpServletResponse httpResponse) {
+                              HttpServletResponse httpResponse) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
