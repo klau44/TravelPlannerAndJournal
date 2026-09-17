@@ -2,9 +2,11 @@ package pl.coderslab.travelplannerandjournal.model.dto;
 
 import jakarta.validation.constraints.Future;
 import lombok.*;
+import pl.coderslab.travelplannerandjournal.validation.ValidTripDates;
 
 import java.time.LocalDate;
 
+@ValidTripDates
 @Getter
 @Setter
 @NoArgsConstructor
