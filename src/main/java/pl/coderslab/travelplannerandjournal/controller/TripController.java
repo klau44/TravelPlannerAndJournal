@@ -1,12 +1,13 @@
 package pl.coderslab.travelplannerandjournal.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.travelplannerandjournal.authorization.CustomUserDetails;
-import pl.coderslab.travelplannerandjournal.model.entity.TripRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.TripRequest;
 import pl.coderslab.travelplannerandjournal.model.dto.TripResponse;
 import pl.coderslab.travelplannerandjournal.service.TripService;
 
@@ -32,13 +33,13 @@ public class TripController {
     }
 
     @PostMapping
-    public ResponseEntity<TripResponse> add(@RequestBody TripRequest tripRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<TripResponse> add(@Valid @RequestBody TripRequest tripRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
         return new ResponseEntity<>(tripService.add(tripRequest, userId), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TripResponse> update(@PathVariable Long id, @RequestBody TripRequest tripRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<TripResponse> update(@PathVariable Long id, @Valid @RequestBody TripRequest tripRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
         return new ResponseEntity<>(tripService.update(id, tripRequest, userId), HttpStatus.CREATED);
     }
