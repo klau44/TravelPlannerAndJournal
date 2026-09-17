@@ -3,7 +3,7 @@ package pl.coderslab.travelplannerandjournal.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import pl.coderslab.travelplannerandjournal.model.*;
+import pl.coderslab.travelplannerandjournal.model.AttractionDTO;
 import pl.coderslab.travelplannerandjournal.model.externalapi.GeocodeDTO;
 import pl.coderslab.travelplannerandjournal.model.externalapi.PlaceDTO;
 

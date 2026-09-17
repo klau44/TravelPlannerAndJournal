@@ -13,4 +13,13 @@ public class TripAttractionResponse {
     private String attractionName;
     private String attractionAddress;
     private boolean visited;
+
+    public static TripAttractionResponse toResponse(TripAttraction tripAttraction) {
+        return TripAttractionResponse.builder()
+                .id(tripAttraction.getId())
+                .attractionName(tripAttraction.getAttraction().getName())
+                .attractionAddress(tripAttraction.getAttraction().getAddress())
+                .visited(tripAttraction.isVisited())
+                .build();
+    }
 }

@@ -21,13 +21,13 @@ public class TripService {
 
     public TripResponse findById(Long tripId, Long userId) {
         return tripRepository.findByIdAndUserId(tripId, userId)
-                .map(TripResponse::toDto)
+                .map(TripResponse::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
     }
 
     public List<TripResponse> findAll(Long userId) {
         return tripRepository.findAllByUserId(userId).stream()
-                .map(TripResponse::toDto)
+                .map(TripResponse::toResponse)
                 .toList();
     }
 
@@ -44,7 +44,7 @@ public class TripService {
                 .build();
         Trip saved = tripRepository.save(trip);
 
-        return TripResponse.toDto(saved);
+        return TripResponse.toResponse(saved);
     }
 
     public TripResponse update(Long tripId, TripRequest tripRequest, Long userId) {
@@ -69,7 +69,7 @@ public class TripService {
 
         Trip updated = tripRepository.save(trip);
 
-        return TripResponse.toDto(updated);
+        return TripResponse.toResponse(updated);
     }
 
     public void delete(Long tripId, Long userId) {

@@ -36,12 +36,7 @@ public class TripAttractionService {
 
         TripAttraction saved = tripAttractionRepository.save(tripAttraction);
 
-        return TripAttractionResponse.builder()
-                .id(saved.getId())
-                .attractionName(attraction.getName())
-                .attractionAddress(attraction.getAddress())
-                .visited(false)
-                .build();
+        return TripAttractionResponse.toResponse(saved);
     }
 
     private Attraction createAttraction(AttractionDTO attractionDTO) {
@@ -62,26 +57,13 @@ public class TripAttractionService {
         return attractionRepository.save(attraction);
     }
 
-    public TripPlanDto showTripAttractions(Long tripId, Long userId) {
+    public TripPlanResponse showTripAttractions(Long tripId, Long userId) {
         Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
         List<TripAttraction> tripAttractions = tripAttractionRepository.findAllByTripId(tripId);
 
-        return TripPlanDto.builder()
-                .tripName(trip.getName())
-                .tripDestination(trip.getDestination())
-                .tripStartDate(trip.getStartDate())
-                .tripEndDate(trip.getEndDate())
-                .tripAttractions(tripAttractions.stream()
-                        .map(tripAttraction -> TripAttractionResponse.builder()
-                                .id(tripAttraction.getId())
-                                .attractionName(tripAttraction.getAttraction().getName())
-                                .attractionAddress(tripAttraction.getAttraction().getAddress())
-                                .visited(tripAttraction.isVisited())
-                                .build())
-                        .toList())
-                .build();
+        return TripPlanResponse.toResponse(trip, tripAttractions);
     }
 
     public void deleteTripAttraction(Long tripId, Long tripAttractionId, Long userId) {
