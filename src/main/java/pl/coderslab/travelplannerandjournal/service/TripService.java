@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.coderslab.travelplannerandjournal.model.entity.Trip;
-import pl.coderslab.travelplannerandjournal.model.entity.TripRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.TripRequest;
 import pl.coderslab.travelplannerandjournal.model.dto.TripResponse;
 import pl.coderslab.travelplannerandjournal.model.entity.User;
 import pl.coderslab.travelplannerandjournal.repository.TripRepository;
