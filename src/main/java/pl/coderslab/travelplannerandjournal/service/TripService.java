@@ -3,9 +3,10 @@ package pl.coderslab.travelplannerandjournal.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.coderslab.travelplannerandjournal.model.dto.TripHistoryResponse;
 import pl.coderslab.travelplannerandjournal.model.entity.Trip;
 import pl.coderslab.travelplannerandjournal.model.dto.TripRequest;
-import pl.coderslab.travelplannerandjournal.model.dto.TripResponse;
+import pl.coderslab.travelplannerandjournal.model.dto.CreateTripResponse;
 import pl.coderslab.travelplannerandjournal.model.entity.User;
 import pl.coderslab.travelplannerandjournal.repository.TripRepository;
 import pl.coderslab.travelplannerandjournal.repository.UserRepository;
@@ -19,19 +20,19 @@ public class TripService {
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
 
-    public TripResponse findById(Long tripId, Long userId) {
+    public CreateTripResponse findById(Long tripId, Long userId) {
         return tripRepository.findByIdAndUserId(tripId, userId)
-                .map(TripResponse::toResponse)
+                .map(CreateTripResponse::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
     }
 
-    public List<TripResponse> findAll(Long userId) {
+    public List<TripHistoryResponse> findAll(Long userId) {
         return tripRepository.findAllByUserId(userId).stream()
-                .map(TripResponse::toResponse)
+                .map(TripHistoryResponse::toResponse)
                 .toList();
     }
 
-    public TripResponse add(TripRequest tripRequest, Long userId) {
+    public CreateTripResponse add(TripRequest tripRequest, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -44,10 +45,10 @@ public class TripService {
                 .build();
         Trip saved = tripRepository.save(trip);
 
-        return TripResponse.toResponse(saved);
+        return CreateTripResponse.toResponse(saved);
     }
 
-    public TripResponse update(Long tripId, TripRequest tripRequest, Long userId) {
+    public CreateTripResponse update(Long tripId, TripRequest tripRequest, Long userId) {
         Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
@@ -69,7 +70,7 @@ public class TripService {
 
         Trip updated = tripRepository.save(trip);
 
-        return TripResponse.toResponse(updated);
+        return CreateTripResponse.toResponse(updated);
     }
 
     public void delete(Long tripId, Long userId) {
