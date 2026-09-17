@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TripResponse {
+public class CreateTripResponse {
 
     private Long id;
     private String name;
@@ -18,8 +18,8 @@ public class TripResponse {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public static TripResponse toResponse(Trip trip) {
-        return TripResponse.builder()
+    public static CreateTripResponse toResponse(Trip trip) {
+        return CreateTripResponse.builder()
                 .id(trip.getId())
                 .name(trip.getName())
                 .destination(trip.getDestination())

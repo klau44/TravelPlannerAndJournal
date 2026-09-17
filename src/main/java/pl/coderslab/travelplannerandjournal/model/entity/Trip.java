@@ -33,4 +33,7 @@ public class Trip {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<TripAttraction> tripAttractions = new ArrayList<>();
+
+    @OneToOne(mappedBy = "trip")
+    private JournalEntry journalEntry;
 }
