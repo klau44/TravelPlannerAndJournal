@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.travelplannerandjournal.model.LoginRequest;
-import pl.coderslab.travelplannerandjournal.model.RegisterRequest;
-import pl.coderslab.travelplannerandjournal.model.UserResponse;
+import pl.coderslab.travelplannerandjournal.model.dto.LoginRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.RegisterRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.UserResponse;
 import pl.coderslab.travelplannerandjournal.service.UserService;
 
 @RequiredArgsConstructor

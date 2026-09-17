@@ -1,6 +1,7 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.dto;
 
 import lombok.*;
+import pl.coderslab.travelplannerandjournal.model.entity.Trip;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,7 @@ public class TripResponse {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public static TripResponse toDto(Trip trip) {
+    public static TripResponse toResponse(Trip trip) {
         return TripResponse.builder()
                 .id(trip.getId())
                 .name(trip.getName())

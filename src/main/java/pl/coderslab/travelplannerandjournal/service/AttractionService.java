@@ -3,7 +3,7 @@ package pl.coderslab.travelplannerandjournal.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import pl.coderslab.travelplannerandjournal.model.*;
+import pl.coderslab.travelplannerandjournal.model.dto.AttractionDto;
 import pl.coderslab.travelplannerandjournal.model.externalapi.GeocodeDTO;
 import pl.coderslab.travelplannerandjournal.model.externalapi.PlaceDTO;
 
@@ -20,7 +20,7 @@ public class AttractionService {
         this.apiKey = apiKey;
     }
 
-    public List<AttractionDTO> findAttractions(String city) {
+    public List<AttractionDto> findAttractions(String city) {
         String placeId = getPlaceId(city);
         PlaceDTO places = restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -39,7 +39,7 @@ public class AttractionService {
         }
 
         return places.getFeatures().stream()
-                .map(feature -> AttractionDTO.builder()
+                .map(feature -> AttractionDto.builder()
                         .name(feature.getProperties().getName())
                         .country(feature.getProperties().getCountry())
                         .city(feature.getProperties().getCity())

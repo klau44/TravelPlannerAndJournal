@@ -13,8 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+import pl.coderslab.travelplannerandjournal.authorization.Role;
 import pl.coderslab.travelplannerandjournal.exception.EmailAlreadyExistsException;
-import pl.coderslab.travelplannerandjournal.model.*;
+import pl.coderslab.travelplannerandjournal.model.dto.LoginRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.RegisterRequest;
+import pl.coderslab.travelplannerandjournal.model.entity.User;
+import pl.coderslab.travelplannerandjournal.model.dto.UserResponse;
 import pl.coderslab.travelplannerandjournal.repository.UserRepository;
 
 @RequiredArgsConstructor

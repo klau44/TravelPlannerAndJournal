@@ -6,7 +6,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.coderslab.travelplannerandjournal.model.User;
+import pl.coderslab.travelplannerandjournal.model.entity.User;
 
 import java.util.Collection;
 import java.util.List;

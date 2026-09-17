@@ -1,4 +1,4 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.dto;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AttractionDTO {
+public class AttractionDto {
     private String name;
     private String country;
     private String city;

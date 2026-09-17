@@ -1,8 +1,9 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import pl.coderslab.travelplannerandjournal.authorization.Role;
 
 @Getter
 @Setter
