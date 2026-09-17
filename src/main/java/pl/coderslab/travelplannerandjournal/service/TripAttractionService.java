@@ -34,9 +34,10 @@ public class TripAttractionService {
                 .visited(false)
                 .build();
 
-        tripAttractionRepository.save(tripAttraction);
+        TripAttraction saved = tripAttractionRepository.save(tripAttraction);
 
         return TripAttractionResponse.builder()
+                .id(saved.getId())
                 .attractionName(attraction.getName())
                 .attractionAddress(attraction.getAddress())
                 .visited(false)
@@ -80,5 +81,15 @@ public class TripAttractionService {
                                 .build())
                         .toList())
                 .build();
+    }
+
+    public void deleteTripAttraction(Long tripId, Long tripAttractionId, Long userId) {
+        tripRepository.findByIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
+
+        TripAttraction toDelete = tripAttractionRepository.findById(tripAttractionId)
+                .orElseThrow();
+
+        tripAttractionRepository.delete(toDelete);
     }
 }
