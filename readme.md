@@ -1,5 +1,4 @@
 ## Travel planner and journal app
-___
 To jest aplikacja do planowania podróży i dokumentowania swoich wspomnień.
 Użytkownik może utworzyć własną wycieczkę, określając miejsce i termin podróży. Aplikacja, wykorzystując zewnętrzne REST API, pobiera informacje o atrakcjach dostępnych w miejscu podróży. Użytkownik może wybrać interesujące go miejsca i przypisać je do swojego planu wycieczki.
 Po rozpoczęciu podróży użytkownik będzie mógł oznaczać zaplanowane miejsca jako odwiedzone oraz dodawać do nich własną ocenę i komentarz. Po zakończeniu podróży użytkownik będzie mógł napisać swoje wspomnienie w dzienniku.
