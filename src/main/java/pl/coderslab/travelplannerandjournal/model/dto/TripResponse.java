@@ -1,6 +1,7 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.dto;
 
 import lombok.*;
+import pl.coderslab.travelplannerandjournal.model.entity.Trip;
 
 import java.time.LocalDate;
 

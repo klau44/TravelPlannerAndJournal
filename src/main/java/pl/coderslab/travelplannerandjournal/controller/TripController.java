@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.travelplannerandjournal.authorization.CustomUserDetails;
-import pl.coderslab.travelplannerandjournal.model.TripRequest;
-import pl.coderslab.travelplannerandjournal.model.TripResponse;
+import pl.coderslab.travelplannerandjournal.model.entity.TripRequest;
+import pl.coderslab.travelplannerandjournal.model.dto.TripResponse;
 import pl.coderslab.travelplannerandjournal.service.TripService;
 
 import java.util.List;

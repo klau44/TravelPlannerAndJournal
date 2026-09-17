@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.travelplannerandjournal.authorization.CustomUserDetails;
-import pl.coderslab.travelplannerandjournal.model.AttractionDTO;
-import pl.coderslab.travelplannerandjournal.model.TripAttractionResponse;
-import pl.coderslab.travelplannerandjournal.model.TripPlanResponse;
+import pl.coderslab.travelplannerandjournal.model.dto.AttractionDto;
+import pl.coderslab.travelplannerandjournal.model.dto.TripAttractionResponse;
+import pl.coderslab.travelplannerandjournal.model.dto.TripPlanResponse;
 import pl.coderslab.travelplannerandjournal.service.TripAttractionService;
 
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class TripAttractionController {
 
     @PostMapping
     public ResponseEntity<TripAttractionResponse> addAttractionToTrip(@PathVariable Long tripId,
-                                                                      @RequestBody AttractionDTO attractionDTO,
+                                                                      @RequestBody AttractionDto attractionDTO,
                                                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
         TripAttractionResponse tripAttractionResponse = tripAttractionService.addAttractionToTrip(attractionDTO, tripId, userId);

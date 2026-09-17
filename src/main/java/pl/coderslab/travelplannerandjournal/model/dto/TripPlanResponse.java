@@ -1,6 +1,8 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.dto;
 
 import lombok.*;
+import pl.coderslab.travelplannerandjournal.model.entity.Trip;
+import pl.coderslab.travelplannerandjournal.model.entity.TripAttraction;
 
 import java.time.LocalDate;
 import java.util.List;

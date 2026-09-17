@@ -4,7 +4,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.coderslab.travelplannerandjournal.model.*;
+import pl.coderslab.travelplannerandjournal.model.dto.AttractionDto;
+import pl.coderslab.travelplannerandjournal.model.entity.Attraction;
+import pl.coderslab.travelplannerandjournal.model.entity.Category;
+import pl.coderslab.travelplannerandjournal.model.entity.Trip;
+import pl.coderslab.travelplannerandjournal.model.entity.TripAttraction;
+import pl.coderslab.travelplannerandjournal.model.dto.TripAttractionResponse;
+import pl.coderslab.travelplannerandjournal.model.dto.TripPlanResponse;
 import pl.coderslab.travelplannerandjournal.repository.AttractionRepository;
 import pl.coderslab.travelplannerandjournal.repository.TripAttractionRepository;
 import pl.coderslab.travelplannerandjournal.repository.TripRepository;
@@ -21,7 +27,7 @@ public class TripAttractionService {
     private final TripAttractionRepository tripAttractionRepository;
 
     @Transactional
-    public TripAttractionResponse addAttractionToTrip(AttractionDTO attractionDTO, Long tripId, Long userId) {
+    public TripAttractionResponse addAttractionToTrip(AttractionDto attractionDTO, Long tripId, Long userId) {
         Trip trip = tripRepository.findByIdAndUserId(tripId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
 
@@ -39,7 +45,7 @@ public class TripAttractionService {
         return TripAttractionResponse.toResponse(saved);
     }
 
-    private Attraction createAttraction(AttractionDTO attractionDTO) {
+    private Attraction createAttraction(AttractionDto attractionDTO) {
         List<Category> categories = attractionDTO.getCategories().stream()
                 .map(categoryService::findOrCreateCategory)
                 .toList();

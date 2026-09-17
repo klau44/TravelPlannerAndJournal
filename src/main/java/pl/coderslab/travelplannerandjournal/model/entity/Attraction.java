@@ -1,4 +1,4 @@
-package pl.coderslab.travelplannerandjournal.model;
+package pl.coderslab.travelplannerandjournal.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
