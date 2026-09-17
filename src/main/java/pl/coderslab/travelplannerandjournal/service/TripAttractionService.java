@@ -75,6 +75,7 @@ public class TripAttractionService {
                 .tripEndDate(trip.getEndDate())
                 .tripAttractions(tripAttractions.stream()
                         .map(tripAttraction -> TripAttractionResponse.builder()
+                                .id(tripAttraction.getId())
                                 .attractionName(tripAttraction.getAttraction().getName())
                                 .attractionAddress(tripAttraction.getAttraction().getAddress())
                                 .visited(tripAttraction.isVisited())
