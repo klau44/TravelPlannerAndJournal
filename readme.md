@@ -5,7 +5,7 @@ Po rozpoczęciu podróży użytkownik będzie mógł oznaczać zaplanowane miejs
 
 ### Główne funkcjonalności
 - rejestracja i logowanie użytkownika - Spring Security, hashowanie haseł z BCrypt,
-- tworzenie, edycja i usuwanie wycieczek - operacje na bazie danych MySQL
+- tworzenie, edycja i usuwanie wycieczek - operacje na bazie danych MySQL, walidacja danych
 - wyszukiwanie lokalizacji za pomocą zewnętrznego API - RestClient do komunikowania się z Geoapify,
 - wyszukiwanie atrakcji turystycznych za pomocą zewnętrznego API,
 - dodawanie wybranych atrakcji do wycieczki,
@@ -22,6 +22,8 @@ Po rozpoczęciu podróży użytkownik będzie mógł oznaczać zaplanowane miejs
 - REST API
 - OpenAPI / Swagger
 
+### Schemat bazy danych
+![db_structure.png](src/main/resources/static/db_structure.png)
 ### Jak uruchomić
 1. Sklonuj repozytorium
 2. Utwórz bazę danych `create database travelPlannerJournal`
