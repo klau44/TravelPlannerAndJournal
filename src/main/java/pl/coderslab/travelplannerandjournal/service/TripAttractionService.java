@@ -34,9 +34,10 @@ public class TripAttractionService {
                 .visited(false)
                 .build();
 
-        tripAttractionRepository.save(tripAttraction);
+        TripAttraction saved = tripAttractionRepository.save(tripAttraction);
 
         return TripAttractionResponse.builder()
+                .id(saved.getId())
                 .attractionName(attraction.getName())
                 .attractionAddress(attraction.getAddress())
                 .visited(false)
@@ -74,11 +75,22 @@ public class TripAttractionService {
                 .tripEndDate(trip.getEndDate())
                 .tripAttractions(tripAttractions.stream()
                         .map(tripAttraction -> TripAttractionResponse.builder()
+                                .id(tripAttraction.getId())
                                 .attractionName(tripAttraction.getAttraction().getName())
                                 .attractionAddress(tripAttraction.getAttraction().getAddress())
                                 .visited(tripAttraction.isVisited())
                                 .build())
                         .toList())
                 .build();
+    }
+
+    public void deleteTripAttraction(Long tripId, Long tripAttractionId, Long userId) {
+        tripRepository.findByIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Trip not found for the user"));
+
+        TripAttraction toDelete = tripAttractionRepository.findById(tripAttractionId)
+                .orElseThrow();
+
+        tripAttractionRepository.delete(toDelete);
     }
 }

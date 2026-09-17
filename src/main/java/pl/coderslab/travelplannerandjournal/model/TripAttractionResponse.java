@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class TripAttractionResponse {
 
+    private Long id;
     private String attractionName;
     private String attractionAddress;
     private boolean visited;

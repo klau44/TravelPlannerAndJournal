@@ -13,7 +13,7 @@ import pl.coderslab.travelplannerandjournal.service.TripAttractionService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/trips/{tripId}/attractions")
+@RequestMapping("/trips/{tripId}/trip-attractions")
 public class TripAttractionController {
 
     private final TripAttractionService tripAttractionService;
@@ -29,10 +29,20 @@ public class TripAttractionController {
     }
 
     @GetMapping
-    public ResponseEntity<TripPlanDto> showTripPlan(@PathVariable Long tripId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<TripPlanDto> showTripPlan(@PathVariable Long tripId,
+                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUser().getId();
         TripPlanDto tripPlan = tripAttractionService.showTripAttractions(tripId, userId);
 
         return new ResponseEntity<>(tripPlan, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{tripAttractionId}")
+    public ResponseEntity<Void> deleteTripAttraction(@PathVariable Long tripId, @PathVariable Long tripAttractionId,
+                                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUser().getId();
+        tripAttractionService.deleteTripAttraction(tripId, tripAttractionId, userId);
+
+        return ResponseEntity.noContent().build();
     }
 }
